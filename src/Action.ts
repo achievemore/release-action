@@ -19,6 +19,7 @@ export class Action {
             this.inputs.body,
             this.inputs.commit,
             this.inputs.draft,
+            this.inputs.prerelease,
             this.inputs.name
         )
 

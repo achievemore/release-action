@@ -17,6 +17,7 @@ const commit = 'commit'
 const contentType = "raw"
 const contentLength = 100
 const draft = true
+const prerelease = true
 const name = 'name'
 const tag = 'tag'
 const token = 'token'
@@ -33,7 +34,7 @@ describe("Action", () => {
 
         await action.perform()
 
-        expect(createMock).toBeCalledWith(tag, body, commit, draft, name)
+        expect(createMock).toBeCalledWith(tag, body, commit, draft, prerelease, name)
         expect(uploadMock).not.toBeCalled()
     })
 
@@ -47,7 +48,7 @@ describe("Action", () => {
 
         await action.perform()
 
-        expect(createMock).toBeCalledWith(tag, body, commit, draft, name)
+        expect(createMock).toBeCalledWith(tag, body, commit, draft, prerelease, name)
         expect(uploadMock).toBeCalledWith(artifacts, url)
     })
 
@@ -62,7 +63,7 @@ describe("Action", () => {
             expect(error).toEqual("error")
         }
 
-        expect(createMock).toBeCalledWith(tag, body, commit, draft, name)
+        expect(createMock).toBeCalledWith(tag, body, commit, draft, prerelease, name)
         expect(uploadMock).not.toBeCalled()
     })
 
@@ -82,7 +83,7 @@ describe("Action", () => {
             expect(error).toEqual("error")
         }
 
-        expect(createMock).toBeCalledWith(tag, body, commit, draft, name)
+        expect(createMock).toBeCalledWith(tag, body, commit, draft, prerelease, name)
         expect(uploadMock).toBeCalledWith(artifacts, url)
     })
 
@@ -105,6 +106,7 @@ describe("Action", () => {
                 body: body,
                 commit: commit,
                 draft: draft,
+                prerelease: prerelease,
                 name: name,
                 tag: tag,
                 token: token,

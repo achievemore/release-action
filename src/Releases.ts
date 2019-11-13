@@ -1,6 +1,6 @@
 import { Context } from "@actions/github/lib/context";
 import { GitHub } from "@actions/github";
-import { AnyResponse, Response, ReposCreateReleaseResponse } from "@octokit/rest";
+import { AnyResponse, Response, ReposCreateReleaseResponse, ReposUploadReleaseAssetResponse } from "@octokit/rest";
 
 export interface Releases {
     create(
@@ -8,6 +8,7 @@ export interface Releases {
         body?: string,
         commitHash?: string,
         draft?: boolean,
+        prerelease?: boolean,
         name?: string
     ): Promise<Response<ReposCreateReleaseResponse>>
 
@@ -17,7 +18,7 @@ export interface Releases {
         contentType: string,
         file: string | object,
         name: string
-    ): Promise<Response<AnyResponse>>
+    ): Promise<Response<ReposUploadReleaseAssetResponse>>
 }
 
 export class GithubReleases implements Releases{
@@ -34,12 +35,14 @@ export class GithubReleases implements Releases{
         body?: string,
         commitHash?: string,
         draft?: boolean,
+        prerelease?: boolean,
         name?: string
     ): Promise<Response<ReposCreateReleaseResponse>> {
         return this.git.repos.createRelease({
             body: body,
             name: name,
             draft: draft,
+            prerelease: prerelease,
             owner: this.context.repo.owner,
             repo: this.context.repo.repo,
             target_commitish: commitHash,
@@ -53,7 +56,7 @@ export class GithubReleases implements Releases{
         contentType: string,
         file: string | object,
         name: string
-    ): Promise<Response<AnyResponse>> {
+    ): Promise<Response<ReposUploadReleaseAssetResponse>> {
         return this.git.repos.uploadReleaseAsset({
             url: assetUrl,
             headers: {
